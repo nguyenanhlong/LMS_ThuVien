@@ -1,0 +1,442 @@
+/* ============================================================
+   FRONTEND STYLES - Dashboard & Interactive Effects
+   ============================================================ */
+
+/* Body & General Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F8FAFC;
+}
+
+/* Material Icons Configuration */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sidebar Styles */
+.sidebar-active {
+  border-left: 4px solid #2563eb;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  padding-right: 1rem;
+}
+
+/* Card Shadow Utility */
+.card-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid #E2E8F0;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Search Input Hover Effect */
+input[type="text"]:focus {
+  transform: scale(1.02);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Sidebar Navigation Links Hover Effects */
+aside nav a {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+aside nav a:not(.sidebar-active):hover {
+  padding-left: 1.5rem;
+}
+
+/* Button Active State */
+button {
+  user-select: none;
+}
+
+button:active {
+  transform: scale(0.98);
+  transition: transform 0.15s ease-in-out;
+}
+
+/* Primary button text should remain white */
+button.bg-primary-container,
+.bg-primary-container {
+  color: #ffffff !important;
+}
+
+button.bg-primary-container:hover,
+.bg-primary-container:hover,
+button.bg-primary-container:focus,
+.bg-primary-container:focus {
+  color: #ffffff !important;
+}
+
+/* KPI Card Hover Effect */
+.group {
+  transition: all 0.3s ease;
+}
+
+.group:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Chart Bars Animation */
+.group div {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover div {
+  filter: brightness(1.1);
+}
+
+/* Notification Items Hover */
+.flex.gap-4.p-3 {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.flex.gap-4.p-3:hover {
+  transform: translateX(4px);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Empty State Animation */
+@keyframes slideInFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slideInFade 0.7s ease-out;
+}
+
+/* Decoration Background Elements */
+.absolute.inset-0 {
+  pointer-events: none;
+}
+
+/* Select Dropdown Styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* Responsive Text Colors */
+a:hover {
+  transition: color 0.2s ease;
+}
+
+/* Header Search Input Styling */
+input[type="text"] {
+  background-color: #ffffff !important;
+  color: #191b23 !important;
+  border: 2px solid #c3c6d7 !important;
+}
+
+input[type="text"]::placeholder {
+  color: #9ca3af !important;
+  opacity: 1;
+}
+
+input[type="text"]:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+input[type="text"]:focus::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Notification Badge Animation */
+.absolute.top-2.right-2 {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Profile Image Hover */
+img[alt="Librarian profile picture"] {
+  transition: transform 0.3s ease;
+}
+
+img[alt="Librarian profile picture"]:hover {
+  transform: scale(1.1);
+}
+
+/* Smooth Transitions for All Interactive Elements */
+button,
+a,
+input,
+select {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Icon Color Transitions */
+.material-symbols-outlined {
+  transition: color 0.2s ease;
+}
+
+/* Status Badge Styles */
+.text-emerald-600,
+.text-rose-600 {
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Accessibility: Focus States */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Card Border Hover */
+.hover\:border-primary-container:hover {
+  border-color: #2563eb;
+}
+
+/* Footer Link Hover */
+footer a {
+  position: relative;
+  text-decoration: none;
+}
+
+footer a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #2563eb;
+  transition: width 0.3s ease;
+}
+
+footer a:hover::after {
+  width: 100%;
+}
+
+/* Loans table readability */
+.overflow-hidden.rounded-3xl.border.border-outline-variant table th,
+.overflow-hidden.rounded-3xl.border.border-outline-variant table td {
+  color: #0f172a !important;
+}
+
+.overflow-hidden.rounded-3xl.border.border-outline-variant table thead {
+  background-color: #f8fafc !important;
+}
+
+.overflow-hidden.rounded-3xl.border.border-outline-variant table button {
+  color: #dc2626 !important;
+}
+
+/* Loading & Transition Effects */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Overlay Blur Effect for Decorative Elements */
+.blur-xl {
+  filter: blur(3rem);
+}
+
+.blur-2xl {
+  filter: blur(4rem);
+}
+
+/* Smooth Scale Transitions */
+.active\:scale-95:active {
+  transform: scale(0.95);
+}
+
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* Text Selection Color */
+::selection {
+  background-color: rgba(37, 99, 235, 0.2);
+  color: inherit;
+}
+
+/* Dark Mode Support (optional) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #0f172a;
+    color: #f0f0fb;
+  }
+
+  input[type="text"] {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #f0f0fb;
+  }
+
+  input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  select {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #f0f0fb;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .sidebar-active,
+  button,
+  select {
+    box-shadow: none;
+  }
+}
+
+/* Improve Catalog page contrast and table readability */
+.dashboard-container main {
+  color: #0f172a; /* darker base text for main content */
+}
+
+.dashboard-container .bg-surface-container-low {
+  background-color: #f6f7fb; /* slightly noticeable surface */
+}
+
+.dashboard-container .card-shadow {
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+  border: 1px solid #e6eef6;
+}
+
+.dashboard-container table thead th {
+  color: #6b7280; /* medium gray for headers */
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.dashboard-container table tbody td {
+  color: #334155; /* readable body text */
+  font-weight: 500;
+}
+
+.dashboard-container table tbody tr {
+  border-color: #eef2f6;
+}
+
+.dashboard-container .text-kpi-number {
+  color: #0f172a;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.dashboard-container .text-on-surface-variant,
+.dashboard-container .text-outline-variant {
+  color: #64748b; /* ensure secondary text is visible */
+}
+
+.dashboard-container .material-symbols-outlined {
+  color: inherit;
+}
+
+/* Make action icons slightly darker */
+.dashboard-container button,
+.dashboard-container a {
+  color: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dashboard-container table tbody td {
+    color: #e6eef6;
+  }
+}
+
+/* Fix select dropdown contrast and visibility inside dashboard/catalog */
+.dashboard-container select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem !important;
+  border-radius: 0.5rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23343A40' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 1em 1em !important;
+}
+
+.dashboard-container select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08) !important;
+}
+
+.dashboard-container select option {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  opacity: 1 !important;
+}
+
+/* Hide IE native expand icon while keeping behavior consistent */
+.dashboard-container select::-ms-expand {
+  display: none;
+}
+/* FIX TABLE TEXT COLOR */
+.dashboard-container table thead th,
+.dashboard-container table tbody td,
+.dashboard-container table tbody td div,
+.dashboard-container table tbody td span:not(.bg-emerald-100):not(.bg-slate-100) {
+  color: #0f172a !important;
+}
