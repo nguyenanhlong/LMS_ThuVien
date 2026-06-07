@@ -6,6 +6,7 @@ import { useToast } from '../context/ToastContext';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const showToast = useToast();
@@ -52,14 +53,25 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <input 
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
-              placeholder="Mật khẩu" 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <input 
+                className="w-full rounded-2xl border border-slate-200 pl-4 pr-12 py-3 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                placeholder="Mật khẩu" 
+                type={showPassword ? "text" : "password"} 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button 
+                type="button"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none flex items-center justify-center"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <span className="material-symbols-outlined text-[20px]">
+                  {showPassword ? "visibility_off" : "visibility"}
+                </span>
+              </button>
+            </div>
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2 text-slate-600"><input type="checkbox" className="text-primary focus:ring-primary" /> Ghi nhớ đăng nhập</label>
               <a className="font-semibold text-primary" href="#" onClick={handleForgotPassword}>Quên mật khẩu?</a>
