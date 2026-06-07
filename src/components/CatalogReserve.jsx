@@ -1,171 +1,178 @@
-import { Link, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import mockApi from '../services/mockApi';
+import { useToast } from '../context/ToastContext';
+import { LoadingState } from './sharedUI';
 import '../styles/frontend.css';
-
-const bookCatalog = [
-  {
-    code: 'BK-0921',
-    title: 'Kỹ thuật lập trình hiện đại',
-    author: 'Nguyễn Văn A',
-    category: 'Kỹ thuật',
-    status: 'Sẵn sàng',
-    isbn: '978-604-12-345-5',
-    publisher: 'NXB Khoa Học và Kỹ Thuật',
-    year: '2024',
-    location: 'Kệ A1-02',
-    cover: 'https://via.placeholder.com/220x300?text=Cover',
-  },
-  {
-    code: 'BK-1104',
-    title: 'Thiết kế UI/UX cơ bản',
-    author: 'Trần Thị B',
-    category: 'Nghệ thuật',
-    status: 'Đang mượn',
-    isbn: '978-604-98-765-1',
-    publisher: 'NXB Mỹ Thuật',
-    year: '2023',
-    location: 'Kệ B2-15',
-    cover: 'https://via.placeholder.com/220x300?text=Cover',
-  },
-  {
-    code: 'BK-0082',
-    title: 'Lịch sử văn minh nhân loại',
-    author: 'Lê Văn C',
-    category: 'Lịch sử',
-    status: 'Bảo trì',
-    isbn: '978-604-54-321-7',
-    publisher: 'NXB Lịch Sử',
-    year: '2022',
-    location: 'Kệ C3-01',
-    cover: 'https://via.placeholder.com/220x300?text=Cover',
-  },
-];
 
 export default function CatalogReserve() {
   const { code } = useParams();
-  const book = bookCatalog.find((item) => item.code === code);
+  const navigate = useNavigate();
+  const showToast = useToast();
+  
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    readerName: '',
+    email: '',
+    phone: '',
+    notifyMethod: 'email',
+    notes: ''
+  });
 
-  if (!book) {
-    return (
-      <div className="dashboard-container">
-        <Sidebar />
-        <main className="ml-sidebar-width min-h-screen flex flex-col bg-background">
-          <Header />
-          <div className="p-8">
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
-              <h1 className="text-2xl font-semibold">Không tìm thấy sách</h1>
-              <p className="mt-3 text-slate-600">Mã sách <strong>{code}</strong> không tồn tại hoặc không đủ thông tin.</p>
-              <Link className="mt-6 inline-flex items-center rounded-full bg-primary-container px-5 py-3 text-sm font-semibold text-white hover:brightness-105 transition-all" to="/catalog">
-                Quay lại Catalog
-              </Link>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fetchBook = async () => {
+      setLoading(true);
+      const data = await mockApi.getBookByCode(code);
+      if (!data) {
+        showToast('Sách không tồn tại', 'error');
+        navigate('/catalog');
+      } else {
+        setBook(data);
+      }
+      setLoading(false);
+    };
+    fetchBook();
+  }, [code, navigate, showToast]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.readerName || !formData.email) {
+      showToast('Vui lòng điền họ tên và email', 'error');
+      return;
+    }
+    
+    setSubmitting(true);
+    try {
+      await mockApi.createReservation({
+        bookCode: book.code,
+        readerName: formData.readerName,
+        email: formData.email,
+        phone: formData.phone,
+        status: 'Chờ nhận',
+        date: new Date().toISOString()
+      });
+      showToast('Đặt trước sách thành công!', 'success');
+      navigate(`/catalog/${code}`);
+    } catch (err) {
+      showToast('Có lỗi xảy ra', 'error');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) return <div className="dashboard-container"><Sidebar /><main className="ml-sidebar-width min-h-screen flex flex-col bg-background"><Header /><LoadingState /></main></div>;
+  if (!book) return null;
 
   return (
     <div className="dashboard-container">
       <Sidebar />
       <main className="ml-sidebar-width min-h-screen flex flex-col bg-background">
         <Header />
-        <div className="p-8 space-y-8">
+
+        <div className="p-8 space-y-8 max-w-4xl mx-auto w-full">
           <div className="rounded-3xl bg-white border border-slate-200 px-6 py-4 shadow-sm">
             <nav className="text-xs text-slate-500 flex flex-wrap items-center gap-2">
-              <Link className="text-primary hover:underline" to="/catalog">Catalog</Link>
+              <Link className="hover:text-primary cursor-pointer" to="/">Dashboard</Link>
               <span>›</span>
-              <span className="font-semibold text-slate-900">Đặt trước sách</span>
+              <Link className="hover:text-primary cursor-pointer" to="/catalog">Quản lý sách</Link>
+              <span>›</span>
+              <Link className="hover:text-primary cursor-pointer" to={`/catalog/${book.code}`}>{book.title}</Link>
+              <span>›</span>
+              <span className="font-semibold text-slate-900">Đặt trước</span>
             </nav>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-6">
-            <div className="bg-white rounded-3xl p-6 card-shadow border border-slate-200">
-              <div className="flex flex-col items-center gap-6">
-                <img src={book.cover} alt={`${book.title} cover`} className="w-full rounded-3xl object-cover" />
-                <div className="w-full space-y-4 text-slate-700">
-                  <div>
-                    <div className="text-xs uppercase tracking-[0.25em] text-slate-500">Mã sách</div>
-                    <div className="text-lg font-semibold text-slate-900">{book.code}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs uppercase tracking-[0.25em] text-slate-500">Trạng thái</div>
-                    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${book.status === 'Sẵn sàng' ? 'bg-emerald-100 text-emerald-700' : book.status === 'Đang mượn' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'}`}>
-                      {book.status}
-                    </span>
-                  </div>
-                  <div className="text-sm space-y-2">
-                    <div><span className="font-semibold">Tác giả:</span> {book.author}</div>
-                    <div><span className="font-semibold">Thể loại:</span> {book.category}</div>
-                    <div><span className="font-semibold">ISBN:</span> {book.isbn}</div>
-                    <div><span className="font-semibold">NXB:</span> {book.publisher}</div>
-                    <div><span className="font-semibold">Năm xuất bản:</span> {book.year}</div>
-                    <div><span className="font-semibold">Vị trí:</span> {book.location}</div>
-                  </div>
-                </div>
-              </div>
+          <div>
+            <h1 className="text-2xl font-semibold">Đặt trước sách</h1>
+            <p className="text-sm text-slate-500 mt-1">Điền thông tin để đăng ký giữ chỗ cuốn sách này.</p>
+          </div>
+
+          <div className="bg-white rounded-3xl card-shadow border border-slate-100 overflow-hidden flex flex-col md:flex-row">
+            <div className="md:w-1/3 bg-slate-50 p-8 border-r border-slate-100 flex flex-col items-center text-center">
+              <img src={book.cover} alt="Cover" className="w-32 h-48 object-cover rounded-lg shadow-md mb-6" />
+              <h3 className="font-bold text-slate-900 text-lg mb-2">{book.title}</h3>
+              <p className="text-slate-600 text-sm mb-4">{book.author}</p>
+              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${book.status === 'Sẵn sàng' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                {book.status}
+              </span>
             </div>
-
-            <div className="space-y-6">
-              <div className="bg-white rounded-3xl p-6 card-shadow border border-slate-200">
-                <div className="flex items-center justify-between gap-3 mb-6">
+            
+            <div className="md:w-2/3 p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h1 className="text-2xl font-semibold">Đăng ký đặt trước</h1>
-                    <p className="text-sm text-slate-500">Nhập thông tin độc giả và phương thức nhận thông báo.</p>
+                    <label className="block text-sm font-semibold text-slate-900 mb-2">Họ và tên <span className="text-rose-500">*</span></label>
+                    <input 
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary transition-all bg-slate-50 focus:bg-white" 
+                      placeholder="Nhập họ tên đầy đủ"
+                      value={formData.readerName}
+                      onChange={e => setFormData({...formData, readerName: e.target.value})}
+                    />
                   </div>
-                  <div className="rounded-full bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-700">3 người đang chờ</div>
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-900 mb-2">Số điện thoại</label>
+                    <input 
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary transition-all bg-slate-50 focus:bg-white" 
+                      placeholder="Nhập số điện thoại"
+                      value={formData.phone}
+                      onChange={e => setFormData({...formData, phone: e.target.value})}
+                    />
+                  </div>
                 </div>
-                <form className="space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <label className="space-y-2 text-sm text-slate-600">
-                      Họ và tên người đăng ký
-                      <input className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Phạm Văn C" />
+
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Email liên hệ <span className="text-rose-500">*</span></label>
+                  <input 
+                    type="email"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary transition-all bg-slate-50 focus:bg-white" 
+                    placeholder="ví dụ: nguyenvana@email.com"
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-3">Phương thức nhận thông báo</label>
+                  <div className="flex gap-6">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="radio" name="notify" value="email" checked={formData.notifyMethod === 'email'} onChange={e => setFormData({...formData, notifyMethod: e.target.value})} className="w-4 h-4 text-primary focus:ring-primary" />
+                      <span className="text-sm text-slate-700">Qua Email</span>
                     </label>
-                    <label className="space-y-2 text-sm text-slate-600">
-                      Email nhận thông báo
-                      <input className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="pvc***@lms.edu.vn" />
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="radio" name="notify" value="sms" checked={formData.notifyMethod === 'sms'} onChange={e => setFormData({...formData, notifyMethod: e.target.value})} className="w-4 h-4 text-primary focus:ring-primary" />
+                      <span className="text-sm text-slate-700">Qua SMS</span>
                     </label>
                   </div>
+                </div>
 
-                  <div className="rounded-3xl bg-slate-50 p-4 border border-slate-200">
-                    <div className="text-sm font-semibold text-slate-900 mb-3">Phương thức nhận thông báo</div>
-                    <div className="space-y-3">
-                      <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 cursor-pointer">
-                        <input type="radio" name="notify" defaultChecked className="h-4 w-4 text-primary" />
-                        <div>
-                          <div className="font-medium">Email (mặc định)</div>
-                          <div className="text-xs text-slate-500">pvc***@lms.edu.vn</div>
-                        </div>
-                      </label>
-                      <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 cursor-pointer">
-                        <input type="radio" name="notify" className="h-4 w-4 text-primary" />
-                        <div>
-                          <div className="font-medium">Tin nhắn SMS</div>
-                          <div className="text-xs text-slate-500">098***321</div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">Ghi chú (Tùy chọn)</label>
+                  <textarea 
+                    rows="3"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-1 focus:ring-primary transition-all bg-slate-50 focus:bg-white resize-none" 
+                    placeholder="Nhập ghi chú thêm nếu có..."
+                    value={formData.notes}
+                    onChange={e => setFormData({...formData, notes: e.target.value})}
+                  />
+                </div>
 
-                  <div className="rounded-3xl bg-blue-50 border border-blue-100 p-4 text-sm text-blue-700">
-                    Tôi đã đọc và đồng ý với <span className="font-semibold">quy định mượn trả tài liệu</span> và cam kết nhận sách trong vòng 48h kể từ khi có thông báo.
-                  </div>
-
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <button type="button" className="w-full rounded-3xl bg-primary-container px-6 py-4 text-sm font-semibold text-white hover:brightness-105 transition-all">
-                      Xác nhận giữ chỗ
-                    </button>
-                    <Link to="/catalog" className="w-full rounded-3xl border border-slate-300 px-6 py-4 text-sm font-semibold text-slate-700 text-center hover:bg-slate-100 transition-all">
-                      Hủy thao tác
-                    </Link>
-                  </div>
-                </form>
-              </div>
-              <div className="bg-white rounded-3xl p-6 card-shadow border border-slate-200">
-                <div className="text-sm text-slate-500">Lưu ý:</div>
-                <p className="mt-3 text-sm text-slate-600">Bạn chỉ có thể đặt trước tối đa 03 tài liệu cùng lúc trên toàn hệ thống LMS.</p>
-              </div>
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                  <Link to={`/catalog/${book.code}`} className="px-6 py-3 rounded-xl border border-slate-200 font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+                    Hủy bỏ
+                  </Link>
+                  <button type="submit" disabled={submitting} className="px-6 py-3 rounded-xl bg-primary-container text-white font-semibold hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-70">
+                    {submitting && <span className="material-symbols-outlined animate-spin text-sm">autorenew</span>}
+                    Xác nhận giữ chỗ
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastProvider } from './context/ToastContext';
 import Dashboard from "./components/Dashboard";
 import Catalog from "./components/Catalog";
 import CatalogDetail from "./components/CatalogDetail";
@@ -26,30 +27,32 @@ import Suppliers from "./components/Suppliers";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/catalog/:code" element={<CatalogDetail />} />
-        <Route path="/catalog/:code/reserve" element={<CatalogReserve />} />
-        <Route path="/readers" element={<Readers />} />
-        <Route path="/readers/:id" element={<ReaderDetail />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/search" element={<SearchDocument />} />
-        <Route path="/loans" element={<Loans />} />
-        <Route path="/loans/create" element={<LoansCreate />} />
-        <Route path="/loans/return" element={<ReturnBook />} />
-        <Route path="/loans/renew" element={<RenewLoan />} />
-        <Route path="/loans/:id" element={<LoanDetail />} />
-        <Route path="/fines" element={<Fines />} />
-        <Route path="/reports" element={<Report />} />
-        <Route path="/reports/charts" element={<StatisticsCharts />} />
-        <Route path="/suppliers" element={<Suppliers />} />
-        <Route path="/suppliers/:id" element={<SupplierDetail />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/audit-log" element={<AuditLog />} />
-      </Routes>
+      <ToastProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:code" element={<CatalogDetail />} />
+          <Route path="/catalog/:code/reserve" element={<CatalogReserve />} />
+          <Route path="/readers" element={<Readers />} />
+          <Route path="/readers/:id" element={<ReaderDetail />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/search" element={<SearchDocument />} />
+          <Route path="/loans" element={<Loans />} />
+          <Route path="/loans/create" element={<LoansCreate />} />
+          <Route path="/loans/return" element={<ReturnBook />} />
+          <Route path="/loans/renew" element={<RenewLoan />} />
+          <Route path="/loans/:id" element={<LoanDetail />} />
+          <Route path="/fines" element={<Fines />} />
+          <Route path="/reports" element={<Report />} />
+          <Route path="/reports/charts" element={<StatisticsCharts />} />
+          <Route path="/suppliers" element={<Suppliers />} />
+          <Route path="/suppliers/:id" element={<SupplierDetail />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/audit-log" element={<AuditLog />} />
+        </Routes>
+      </ToastProvider>
     </BrowserRouter>
   );
 }
