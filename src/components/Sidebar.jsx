@@ -2,25 +2,25 @@ import { Link, useLocation } from 'react-router-dom';
 
 const defaultMenuItems = [
   { label: 'Dashboard', icon: 'dashboard', to: '/' },
-  { label: 'Tra cuu tai lieu', icon: 'search', to: '/search' },
-  { label: 'Quan ly sach', icon: 'menu_book', to: '/catalog' },
-  { label: 'Muon tra', icon: 'receipt_long', to: '/loans' },
-  { label: 'Doc gia', icon: 'group', to: '/readers' },
-  { label: 'Tien phat', icon: 'payments', to: '/fines' },
-  { label: 'Nha cung cap', icon: 'inventory_2', to: '/suppliers' },
-  { label: 'Thong bao', icon: 'notifications', to: '/notifications' },
-  { label: 'Bao cao', icon: 'analytics', to: '/reports' },
+  { label: 'Tra cứu tài liệu', icon: 'search', to: '/search' },
+  { label: 'Quản lý sách', icon: 'menu_book', to: '/catalog' },
+  { label: 'Mượn trả', icon: 'receipt_long', to: '/loans' },
+  { label: 'Độc giả', icon: 'group', to: '/readers' },
+  { label: 'Tiền phạt', icon: 'payments', to: '/fines' },
+  { label: 'Nhà cung cấp', icon: 'inventory_2', to: '/suppliers' },
+  { label: 'Thông báo', icon: 'notifications', to: '/notifications' },
+  { label: 'Báo cáo', icon: 'analytics', to: '/reports' },
   { label: 'Audit Log', icon: 'manage_search', to: '/audit-log' },
 ];
 
 const loanSubmenuItems = [
-  { label: 'Tao phieu muon', icon: 'add', to: '/loans/create' },
-  { label: 'Tra sach', icon: 'assignment_return', to: '/loans/return' },
-  { label: 'Gia han sach', icon: 'event_repeat', to: '/loans/renew' },
+  { label: 'Tạo phiếu mượn', icon: 'add', to: '/loans/create' },
+  { label: 'Trả sách', icon: 'assignment_return', to: '/loans/return' },
+  { label: 'Gia hạn sách', icon: 'event_repeat', to: '/loans/renew' },
 ];
 
 const reportSubmenuItems = [
-  { label: 'Bieu do thong ke', icon: 'bar_chart', to: '/reports/charts' },
+  { label: 'Biểu đồ thống kê', icon: 'bar_chart', to: '/reports/charts' },
 ];
 
 function Submenu({ items, currentPath }) {

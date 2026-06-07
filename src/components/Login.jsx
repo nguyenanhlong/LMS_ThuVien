@@ -46,14 +46,14 @@ export default function Login() {
           <p className="mt-2 text-sm text-slate-500">Nhập tài khoản thủ thư hoặc admin để tiếp tục.</p>
           <form className="mt-8 space-y-4" onSubmit={handleLogin}>
             <input 
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm" 
+              className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
               placeholder="Email (admin@library.vn / librarian@library.vn)" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <input 
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm" 
+              className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
               placeholder="Mật khẩu" 
               type="password" 
               value={password}
@@ -61,7 +61,7 @@ export default function Login() {
               required
             />
             <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-slate-600"><input type="checkbox" /> Ghi nhớ đăng nhập</label>
+              <label className="flex items-center gap-2 text-slate-600"><input type="checkbox" className="text-primary focus:ring-primary" /> Ghi nhớ đăng nhập</label>
               <a className="font-semibold text-primary" href="#" onClick={handleForgotPassword}>Quên mật khẩu?</a>
             </div>
             <button 

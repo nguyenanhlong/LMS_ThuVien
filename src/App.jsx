@@ -24,33 +24,44 @@ import StatisticsCharts from "./components/StatisticsCharts";
 import SupplierDetail from "./components/SupplierDetail";
 import Suppliers from "./components/Suppliers";
 
+import { Navigate } from 'react-router-dom';
+
+const ProtectedRoute = ({ children }) => {
+  const authUser = localStorage.getItem('authUser');
+  if (!authUser) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
 function App() {
   return (
     <BrowserRouter>
       <ToastProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/catalog/:code" element={<CatalogDetail />} />
-          <Route path="/catalog/:code/reserve" element={<CatalogReserve />} />
-          <Route path="/readers" element={<Readers />} />
-          <Route path="/readers/:id" element={<ReaderDetail />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/search" element={<SearchDocument />} />
-          <Route path="/loans" element={<Loans />} />
-          <Route path="/loans/create" element={<LoansCreate />} />
-          <Route path="/loans/return" element={<ReturnBook />} />
-          <Route path="/loans/renew" element={<RenewLoan />} />
-          <Route path="/loans/:id" element={<LoanDetail />} />
-          <Route path="/fines" element={<Fines />} />
-          <Route path="/reports" element={<Report />} />
-          <Route path="/reports/charts" element={<StatisticsCharts />} />
-          <Route path="/suppliers" element={<Suppliers />} />
-          <Route path="/suppliers/:id" element={<SupplierDetail />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="/audit-log" element={<AuditLog />} />
+          
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/catalog" element={<ProtectedRoute><Catalog /></ProtectedRoute>} />
+          <Route path="/catalog/:code" element={<ProtectedRoute><CatalogDetail /></ProtectedRoute>} />
+          <Route path="/catalog/:code/reserve" element={<ProtectedRoute><CatalogReserve /></ProtectedRoute>} />
+          <Route path="/readers" element={<ProtectedRoute><Readers /></ProtectedRoute>} />
+          <Route path="/readers/:id" element={<ProtectedRoute><ReaderDetail /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+          <Route path="/search" element={<ProtectedRoute><SearchDocument /></ProtectedRoute>} />
+          <Route path="/loans" element={<ProtectedRoute><Loans /></ProtectedRoute>} />
+          <Route path="/loans/create" element={<ProtectedRoute><LoansCreate /></ProtectedRoute>} />
+          <Route path="/loans/return" element={<ProtectedRoute><ReturnBook /></ProtectedRoute>} />
+          <Route path="/loans/renew" element={<ProtectedRoute><RenewLoan /></ProtectedRoute>} />
+          <Route path="/loans/:id" element={<ProtectedRoute><LoanDetail /></ProtectedRoute>} />
+          <Route path="/fines" element={<ProtectedRoute><Fines /></ProtectedRoute>} />
+          <Route path="/reports" element={<ProtectedRoute><Report /></ProtectedRoute>} />
+          <Route path="/reports/charts" element={<ProtectedRoute><StatisticsCharts /></ProtectedRoute>} />
+          <Route path="/suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
+          <Route path="/suppliers/:id" element={<ProtectedRoute><SupplierDetail /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+          <Route path="/audit-log" element={<ProtectedRoute><AuditLog /></ProtectedRoute>} />
         </Routes>
       </ToastProvider>
     </BrowserRouter>

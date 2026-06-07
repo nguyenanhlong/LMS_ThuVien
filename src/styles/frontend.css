@@ -313,29 +313,6 @@ footer a:hover::after {
   color: inherit;
 }
 
-/* Dark Mode Support (optional) */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #0f172a;
-    color: #f0f0fb;
-  }
-
-  input[type="text"] {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #f0f0fb;
-  }
-
-  input[type="text"]::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-  }
-
-  select {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #f0f0fb;
-  }
-}
 
 /* Print Styles */
 @media print {
@@ -396,11 +373,7 @@ footer a:hover::after {
   color: inherit;
 }
 
-@media (prefers-color-scheme: dark) {
-  .dashboard-container table tbody td {
-    color: #e6eef6;
-  }
-}
+
 
 /* Fix select dropdown contrast and visibility inside dashboard/catalog */
 .dashboard-container select {
