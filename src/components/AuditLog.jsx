@@ -1,9 +1,9 @@
 import { DataTable, Page } from './sharedScreen';
 
 const rows = [
-  { id: 'LOG-9001', user: 'Admin Lumina', action: 'Tao phieu muon LN-1023', time: '07/06/2026 08:12', ip: '192.168.1.10' },
+  { id: 'LOG-9001', user: 'Admin Library', action: 'Tao phieu muon LN-1023', time: '07/06/2026 08:12', ip: '192.168.1.10' },
   { id: 'LOG-9002', user: 'Thu thu Mai', action: 'Cap nhat sach BK-0921', time: '07/06/2026 09:20', ip: '192.168.1.12' },
-  { id: 'LOG-9003', user: 'Admin Lumina', action: 'Thu tien phat FN-002', time: '07/06/2026 10:05', ip: '192.168.1.10' },
+  { id: 'LOG-9003', user: 'Admin Library', action: 'Thu tien phat FN-002', time: '07/06/2026 10:05', ip: '192.168.1.10' },
 ];
 
 export default function AuditLog() {

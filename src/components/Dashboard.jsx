@@ -269,7 +269,7 @@ export default function Dashboard() {
 
         {/* Footer Info */}
         <footer className="mt-auto p-8 border-t border-outline-variant flex justify-between items-center text-outline-variant text-xs">
-          <p>© 2024 Lumina Library Management System. v2.4.1</p>
+          <p>© 2024 Library Management System. v2.4.1</p>
           <div className="flex gap-6">
             <a className="hover:text-primary" href="#">
               Quy định thư viện

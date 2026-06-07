@@ -5,7 +5,7 @@ export default function Login() {
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-[1fr_520px] bg-slate-950">
       <section className="hidden lg:flex flex-col justify-between p-12 bg-[url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1400&q=80')] bg-cover bg-center">
         <div className="rounded-2xl bg-slate-950/70 px-5 py-4 text-white backdrop-blur">
-          <h1 className="text-3xl font-bold">Lumina Library</h1>
+          <h1 className="text-3xl font-bold">Library</h1>
           <p className="mt-2 text-sm text-slate-200">Quan ly sach, doc gia va luong muon tra tren mot giao dien tap trung.</p>
         </div>
       </section>

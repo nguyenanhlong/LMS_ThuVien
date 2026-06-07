@@ -23,12 +23,6 @@ const reportSubmenuItems = [
   { label: 'Bieu do thong ke', icon: 'bar_chart', to: '/reports/charts' },
 ];
 
-const defaultActionItems = [
-  { label: 'Ho so ca nhan', icon: 'account_circle', to: '/profile' },
-  { label: 'Doi mat khau', icon: 'lock_reset', to: '/change-password' },
-  { label: 'Dang xuat', icon: 'logout', to: '/login' },
-];
-
 function Submenu({ items, currentPath }) {
   return (
     <div className="mt-1 space-y-1 pl-10">
@@ -49,7 +43,7 @@ function Submenu({ items, currentPath }) {
   );
 }
 
-export default function Sidebar({ menuItems = defaultMenuItems, actionItems = defaultActionItems }) {
+export default function Sidebar({ menuItems = defaultMenuItems }) {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -62,7 +56,7 @@ export default function Sidebar({ menuItems = defaultMenuItems, actionItems = de
           </div>
           <div>
             <h1 className="font-app-name text-app-name text-surface-container-lowest leading-tight">
-              Lumina
+              Library
             </h1>
             <p className="text-[10px] text-outline-variant uppercase tracking-widest">
               Admin Console
@@ -95,18 +89,7 @@ export default function Sidebar({ menuItems = defaultMenuItems, actionItems = de
         </nav>
       </div>
 
-      <div className="mt-auto p-6 space-y-1">
-        <Link to="/loans/create" className="w-full bg-primary-container text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 mb-6 active:scale-95 transition-transform">
-          <span className="material-symbols-outlined">add</span>
-          New Entry
-        </Link>
-        {actionItems.map((item) => (
-          <Link key={item.label} className="text-outline-variant hover:text-white px-4 py-3 flex items-center gap-3 hover:bg-white/5 transition-all" to={item.to}>
-            <span className="material-symbols-outlined">{item.icon}</span>
-            <span className="font-body-md text-body-md">{item.label}</span>
-          </Link>
-        ))}
-      </div>
+      <div className="mt-auto p-6" />
     </aside>
   );
 }
