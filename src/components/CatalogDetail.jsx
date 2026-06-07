@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import '../styles/frontend.css';
