@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { LoadingState } from './sharedUI';
 
@@ -14,7 +14,7 @@ export default function SupplierDetail() {
   useEffect(() => {
     const fetchSupplier = async () => {
       setLoading(true);
-      const data = await mockApi.getSuppliers();
+      const data = await api.getSuppliers();
       const s = data.find(x => x.id === id);
       setSupplier(s);
       setLoading(false);

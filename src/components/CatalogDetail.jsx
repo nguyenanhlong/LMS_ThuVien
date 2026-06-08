@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { LoadingState } from './sharedUI';
 import '../styles/frontend.css';
 
@@ -14,7 +14,7 @@ export default function CatalogDetail() {
   useEffect(() => {
     const fetchBook = async () => {
       setLoading(true);
-      const data = await mockApi.getBookByCode(code);
+      const data = await api.getBookByCode(code);
       setBook(data);
       setLoading(false);
     };

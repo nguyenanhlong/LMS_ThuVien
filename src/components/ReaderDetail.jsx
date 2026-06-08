@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { LoadingState } from './sharedUI';
 import '../styles/frontend.css';
@@ -20,7 +20,7 @@ export default function ReaderDetail() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const r = await mockApi.getReaderById(id);
+      const r = await api.getReaderById(id);
       if (!r) {
         showToast('Không tìm thấy độc giả', 'error');
         navigate('/readers');
@@ -28,11 +28,11 @@ export default function ReaderDetail() {
       }
       setReader(r);
       
-      const allLoans = await mockApi.getLoans();
+      const allLoans = await api.getLoans();
       const readerLoans = allLoans.filter(l => l.readerId === id);
       setLoans(readerLoans);
       
-      const allFines = await mockApi.getFines();
+      const allFines = await api.getFines();
       const readerFines = allFines.filter(f => f.readerId === id);
       setFines(readerFines);
       

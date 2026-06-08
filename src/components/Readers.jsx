@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { Modal, ConfirmDialog, LoadingState, EmptyState } from './sharedUI';
 import '../styles/frontend.css';
@@ -25,7 +25,7 @@ export default function Readers() {
 
   const fetchReaders = async () => {
     setLoading(true);
-    const data = await mockApi.getReaders();
+    const data = await api.getReaders();
     setReaders(data);
     setLoading(false);
   };
@@ -47,7 +47,7 @@ export default function Readers() {
         id: `RD-${Math.floor(Math.random() * 9000) + 1000}`,
         card: `LIB-${new Date().getFullYear()}-${Math.floor(Math.random() * 900) + 100}`
       };
-      await mockApi.createReader(newReader);
+      await api.createReader(newReader);
       showToast('Thêm độc giả thành công', 'success');
       setIsModalOpen(false);
       fetchReaders();

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useToast } from '../context/ToastContext';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 
 export default function Profile() {
   const showToast = useToast();
@@ -20,7 +20,7 @@ export default function Profile() {
     setLoading(true);
     setTimeout(() => {
       localStorage.setItem('authUser', JSON.stringify(user));
-      mockApi.addAuditLog('Cập nhật hồ sơ', 'Thay đổi thông tin cá nhân');
+      api.addAuditLog('Cập nhật hồ sơ', 'Thay đổi thông tin cá nhân');
       showToast('Cập nhật hồ sơ thành công', 'success');
       setLoading(false);
     }, 500);

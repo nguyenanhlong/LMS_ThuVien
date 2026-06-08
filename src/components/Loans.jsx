@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { LoadingState, EmptyState } from './sharedUI';
 
@@ -19,7 +19,7 @@ export default function Loans() {
 
   const fetchLoans = async () => {
     setLoading(true);
-    const data = await mockApi.getLoans();
+    const data = await api.getLoans();
     setLoans(data);
     setLoading(false);
   };

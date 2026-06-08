@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import '../styles/frontend.css';
 
@@ -25,7 +25,7 @@ export default function RenewLoan() {
 
   const handleCheckLoan = async (idToCheck = loanId) => {
     if (!idToCheck) return showToast('Vui lòng nhập mã phiếu mượn', 'error');
-    const l = await mockApi.getLoanById(idToCheck);
+    const l = await api.getLoanById(idToCheck);
     if (!l) {
       setLoan(null);
       return showToast('Không tìm thấy phiếu mượn', 'error');
@@ -44,8 +44,8 @@ export default function RenewLoan() {
       oldDue.setDate(oldDue.getDate() + Number(days));
       const newDueStr = oldDue.toISOString().split('T')[0];
       
-      await mockApi.updateLoan(loan.id, { due: newDueStr });
-      mockApi.addAuditLog('Gia hạn phiếu mượn', `Phiếu mượn: ${loan.id}, Thêm ${days} ngày`);
+      await api.updateLoan(loan.id, { due: newDueStr });
+      api.addAuditLog('Gia hạn phiếu mượn', `Phiếu mượn: ${loan.id}, Thêm ${days} ngày`);
       
       showToast('Gia hạn thành công', 'success');
       navigate(`/loans/${loan.id}`);

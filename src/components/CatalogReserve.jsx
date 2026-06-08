@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { LoadingState } from './sharedUI';
 import '../styles/frontend.css';
@@ -27,7 +27,7 @@ export default function CatalogReserve() {
   useEffect(() => {
     const fetchBook = async () => {
       setLoading(true);
-      const data = await mockApi.getBookByCode(code);
+      const data = await api.getBookByCode(code);
       if (!data) {
         showToast('Sách không tồn tại', 'error');
         navigate('/catalog');
@@ -48,7 +48,7 @@ export default function CatalogReserve() {
     
     setSubmitting(true);
     try {
-      await mockApi.createReservation({
+      await api.createReservation({
         bookCode: book.code,
         readerName: formData.readerName,
         email: formData.email,

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { Modal, LoadingState, EmptyState } from './sharedUI';
 import '../styles/frontend.css';
@@ -22,14 +22,14 @@ export default function Fines() {
 
   const fetchFines = async () => {
     setLoading(true);
-    const data = await mockApi.getFines();
+    const data = await api.getFines();
     setFines(data);
     setLoading(false);
   };
 
   const handleCollect = async (id) => {
     try {
-      await mockApi.markFinePaid(id);
+      await api.markFinePaid(id);
       showToast('Đã thu tiền phạt thành công', 'success');
       fetchFines();
     } catch(err) {
@@ -41,7 +41,7 @@ export default function Fines() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const rd = await mockApi.getReaderById(formData.readerId);
+      const rd = await api.getReaderById(formData.readerId);
       if (!rd) {
         showToast('Không tìm thấy mã độc giả', 'error');
         setSubmitting(false);
@@ -57,7 +57,7 @@ export default function Fines() {
         status: 'Chưa thu',
         date: new Date().toISOString()
       };
-      await mockApi.createFine(newFine);
+      await api.createFine(newFine);
       showToast('Thêm khoản phạt thành công', 'success');
       setIsModalOpen(false);
       fetchFines();

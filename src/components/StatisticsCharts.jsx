@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { LoadingState } from './sharedUI';
 
 export default function StatisticsCharts() {
@@ -12,8 +12,8 @@ export default function StatisticsCharts() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      // Giả lập lấy số liệu thống kê mượn sách 6 tháng gần nhất từ mockApi
-      await mockApi.getLoans(); // just to simulate delay
+      // Giả lập lấy số liệu thống kê mượn sách 6 tháng gần nhất từ backend
+      await api.getLoans(); // just to simulate delay
       setData({
         months: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
         values: [120, 150, 180, 140, 210, 250]

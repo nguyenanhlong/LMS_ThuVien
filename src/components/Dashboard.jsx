@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import '../styles/frontend.css';
 
 export default function Dashboard() {
@@ -11,10 +11,10 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       const [b, l, r, n] = await Promise.all([
-        mockApi.getBooks(),
-        mockApi.getLoans(),
-        mockApi.getReaders(),
-        mockApi.getNotifications()
+        api.getBooks(),
+        api.getLoans(),
+        api.getReaders(),
+        api.getNotifications()
       ]);
       
       const overdue = l.filter(loan => loan.status !== 'Đã trả' && new Date(loan.due) < new Date()).length;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import '../styles/frontend.css';
 
@@ -26,7 +26,7 @@ export default function ReturnBook() {
 
   const handleCheckLoan = async (idToCheck = loanId) => {
     if (!idToCheck) return showToast('Vui lòng nhập mã phiếu mượn', 'error');
-    const l = await mockApi.getLoanById(idToCheck);
+    const l = await api.getLoanById(idToCheck);
     if (!l) {
       setLoan(null);
       setBooks([]);
@@ -51,7 +51,7 @@ export default function ReturnBook() {
 
     const bookData = [];
     for (const code of l.books) {
-      const b = await mockApi.getBookByCode(code);
+      const b = await api.getBookByCode(code);
       if (b) bookData.push(b);
     }
     setBooks(bookData);
@@ -63,15 +63,15 @@ export default function ReturnBook() {
     try {
       // update books
       for (const b of books) {
-        await mockApi.updateBook(b.code, { status: 'Sẵn sàng' });
+        await api.updateBook(b.code, { status: 'Sẵn sàng' });
       }
       
       // update loan
-      await mockApi.updateLoan(loan.id, { status: 'Đã trả' });
+      await api.updateLoan(loan.id, { status: 'Đã trả' });
       
       // add fine if any
       if (fines > 0) {
-        await mockApi.createFine({
+        await api.createFine({
           id: `FN-${Math.floor(Math.random()*9000)+1000}`,
           loanId: loan.id,
           readerId: loan.readerId,
@@ -83,7 +83,7 @@ export default function ReturnBook() {
         });
       }
       
-      mockApi.addAuditLog('Trả sách', `Phiếu mượn: ${loan.id}`);
+      api.addAuditLog('Trả sách', `Phiếu mượn: ${loan.id}`);
       showToast('Trả sách thành công', 'success');
       navigate(`/loans/${loan.id}`);
     } catch (err) {

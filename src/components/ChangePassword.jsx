@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useToast } from '../context/ToastContext';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 
 export default function ChangePassword() {
   const showToast = useToast();
@@ -23,7 +23,7 @@ export default function ChangePassword() {
     }
     setLoading(true);
     setTimeout(() => {
-      mockApi.addAuditLog('Đổi mật khẩu', 'Người dùng đổi mật khẩu');
+      api.addAuditLog('Đổi mật khẩu', 'Người dùng đổi mật khẩu');
       showToast('Đổi mật khẩu thành công', 'success');
       setFormData({ current: '', newPass: '', confirm: '' });
       setLoading(false);
