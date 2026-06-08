@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { LoadingState, EmptyState } from './sharedUI';
 import '../styles/frontend.css';
 
@@ -30,7 +30,7 @@ export default function SearchDocument() {
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
-      const data = await mockApi.getBooks();
+      const data = await api.getBooks();
       setBooks(data);
       setLoading(false);
     };

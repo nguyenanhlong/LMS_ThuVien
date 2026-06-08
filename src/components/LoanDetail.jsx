@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { LoadingState } from './sharedUI';
 import '../styles/frontend.css';
@@ -19,7 +19,7 @@ export default function LoanDetail() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const l = await mockApi.getLoanById(id);
+      const l = await api.getLoanById(id);
       if (!l) {
         showToast('Phiếu mượn không tồn tại', 'error');
         navigate('/loans');
@@ -29,7 +29,7 @@ export default function LoanDetail() {
       
       const bookData = [];
       for (const code of l.books) {
-        const b = await mockApi.getBookByCode(code);
+        const b = await api.getBookByCode(code);
         if (b) bookData.push(b);
       }
       setBooks(bookData);

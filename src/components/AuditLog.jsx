@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { LoadingState, EmptyState } from './sharedUI';
 
 export default function AuditLog() {
@@ -16,7 +16,7 @@ export default function AuditLog() {
 
   const fetchLogs = async () => {
     setLoading(true);
-    const data = await mockApi.getAuditLogs();
+    const data = await api.getAuditLogs();
     setLogs(data);
     setLoading(false);
   };

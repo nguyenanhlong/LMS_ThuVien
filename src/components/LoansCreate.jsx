@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import '../styles/frontend.css';
 
@@ -20,7 +20,7 @@ export default function LoansCreate() {
 
   const handleCheckReader = async () => {
     if (!readerCode) return showToast('Vui lòng nhập mã độc giả', 'error');
-    const rd = await mockApi.getReaderById(readerCode);
+    const rd = await api.getReaderById(readerCode);
     if (rd) {
       setReader(rd);
       showToast('Đã tìm thấy độc giả', 'success');
@@ -38,7 +38,7 @@ export default function LoansCreate() {
       return showToast('Sách này đã được thêm', 'error');
     }
 
-    const b = await mockApi.getBookByCode(bookQuery);
+    const b = await api.getBookByCode(bookQuery);
     if (!b) return showToast('Không tìm thấy sách', 'error');
     if (b.status !== 'Sẵn sàng') return showToast(`Sách hiện đang ${b.status}`, 'warning');
     
@@ -70,7 +70,7 @@ export default function LoansCreate() {
         books: selectedBooks.map(b => b.code)
       };
       
-      await mockApi.createLoan(newLoan);
+      await api.createLoan(newLoan);
       showToast('Tạo phiếu mượn thành công!', 'success');
       navigate(`/loans/${newLoan.id}`);
     } catch (err) {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { LoadingState, EmptyState } from './sharedUI';
 
@@ -18,18 +18,18 @@ export default function Notifications() {
 
   const fetchNotifications = async () => {
     setLoading(true);
-    const data = await mockApi.getNotifications();
+    const data = await api.getNotifications();
     setNotifications(data);
     setLoading(false);
   };
 
   const handleMarkRead = async (id) => {
-    await mockApi.markNotificationRead(id);
+    await api.markNotificationRead(id);
     fetchNotifications();
   };
 
   const handleMarkAllRead = async () => {
-    await mockApi.markAllNotificationsRead();
+    await api.markAllNotificationsRead();
     showToast('Đã đánh dấu tất cả là đã đọc', 'success');
     fetchNotifications();
   };

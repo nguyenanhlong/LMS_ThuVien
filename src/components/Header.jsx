@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 
 const profileImage =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuA1MIRlxiu0qf1ifXHNU2EXzkSWYIfk5R_VwfhQDr7ZKf1BKpBlLJLRvGSGyydAT7iYjpQ7dTMvG4G_0t3MKxaEcSO_HKNFbN8JLTPzg1QAva71wXTcWQdzIsIdkpHWYylHJZdj8U_EtF1FKuRcW9hhEorX-2EXAvJedi4ft7Ay1zVd5qmfu0nw7UqqsQZlw8uz0QKcLYatXH3MwLFRsXlZiDzf1wsf56SBbYL_2sQwHlxsFSlGyb6dnMbABQRUHLrivfKcEzDpMWI';
@@ -25,7 +25,7 @@ export default function Header() {
 
   useEffect(() => {
     const fetchNotifs = async () => {
-      const data = await mockApi.getNotifications();
+      const data = await api.getNotifications();
       setNotifications(data.slice(0, 5)); // only top 5 for header
     };
     fetchNotifs();
@@ -58,7 +58,7 @@ export default function Header() {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    await mockApi.logout();
+    await api.logout();
     navigate('/login');
   };
 

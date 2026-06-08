@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { LoadingState } from './sharedUI';
 
@@ -21,10 +21,10 @@ export default function Report() {
     const fetchStats = async () => {
       setLoading(true);
       const [b, r, l, f] = await Promise.all([
-        mockApi.getBooks(),
-        mockApi.getReaders(),
-        mockApi.getLoans(),
-        mockApi.getFines()
+        api.getBooks(),
+        api.getReaders(),
+        api.getLoans(),
+        api.getFines()
       ]);
       setStats({
         books: b.length,

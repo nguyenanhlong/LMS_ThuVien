@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 
 export default function Login() {
@@ -15,7 +15,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      await mockApi.login(email, password);
+      await api.login(email, password);
       showToast('Đăng nhập thành công!', 'success');
       navigate('/');
     } catch (err) {

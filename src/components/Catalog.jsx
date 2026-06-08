@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import mockApi from '../services/mockApi';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { Modal, ConfirmDialog, LoadingState, EmptyState } from './sharedUI';
 import '../styles/frontend.css';
@@ -30,7 +30,7 @@ export default function Catalog() {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const data = await mockApi.getBooks();
+      const data = await api.getBooks();
       setBooks(data);
     } catch (e) {
       showToast('Lỗi khi tải dữ liệu sách', 'error');
@@ -79,10 +79,10 @@ export default function Catalog() {
     e.preventDefault();
     try {
       if (editingBook) {
-        await mockApi.updateBook(formData.code, formData);
+        await api.updateBook(formData.code, formData);
         showToast('Cập nhật sách thành công');
       } else {
-        await mockApi.createBook({ ...formData, cover: 'https://via.placeholder.com/70x100?text=Cover' });
+        await api.createBook({ ...formData, cover: 'https://via.placeholder.com/70x100?text=Cover' });
         showToast('Thêm sách thành công');
       }
       setIsModalOpen(false);
@@ -106,7 +106,7 @@ export default function Catalog() {
 
   const confirmDelete = async () => {
     try {
-      await mockApi.deleteBook(deletingId);
+      await api.deleteBook(deletingId);
       showToast('Đã xóa sách', 'success');
       fetchBooks();
     } catch (err) {
