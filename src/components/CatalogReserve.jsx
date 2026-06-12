@@ -48,18 +48,24 @@ export default function CatalogReserve() {
     
     setSubmitting(true);
     try {
-      await api.createReservation({
+      const res = await api.createReservation({
         bookCode: book.code,
         readerName: formData.readerName,
         email: formData.email,
         phone: formData.phone,
-        status: 'Chờ nhận',
-        date: new Date().toISOString()
+        notifyMethod: formData.notifyMethod,
+        notes: formData.notes,
+        status: 'Chờ nhận'
       });
-      showToast('Đặt trước sách thành công!', 'success');
+      if (res.email_sent) {
+        showToast('Đặt trước thành công! Email xác nhận đã được gửi.', 'success');
+      } else {
+        showToast('Đặt trước thành công nhưng chưa gửi được email.', 'warning');
+      }
       navigate(`/catalog/${code}`);
     } catch (err) {
-      showToast('Có lỗi xảy ra', 'error');
+      const msg = err.response?.data?.message || 'Có lỗi xảy ra khi đặt trước sách';
+      showToast(msg, 'error');
     } finally {
       setSubmitting(false);
     }
