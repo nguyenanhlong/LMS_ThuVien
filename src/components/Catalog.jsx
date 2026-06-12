@@ -20,7 +20,8 @@ export default function Catalog() {
   const [editingBook, setEditingBook] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   
-  const [formData, setFormData] = useState({ code: '', title: '', author: '', category: '', status: 'Sẵn sàng' });
+  // Khởi tạo formData có trường cover
+  const [formData, setFormData] = useState({ code: '', title: '', author: '', category: '', status: 'Sẵn sàng', cover: null });
   const showToast = useToast();
 
   useEffect(() => {
@@ -78,29 +79,52 @@ export default function Catalog() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Sử dụng FormData để có thể gửi file ảnh
+      const payload = new FormData();
+      payload.append('title', formData.title);
+      payload.append('author', formData.author);
+      payload.append('category', formData.category);
+      payload.append('status', formData.status);
+
+      // Chỉ đính kèm file nếu người dùng thực sự chọn 1 file mới (kiểm tra instance)
+      if (formData.cover instanceof File) {
+        payload.append('cover', formData.cover);
+      }
+
       if (editingBook) {
-        await api.updateBook(formData.code, formData);
+        // Gửi qua POST nhưng ép Laravel hiểu là PUT bằng _method
+        payload.append('_method', 'PUT'); 
+        await api.updateBook(formData.code, payload);
         showToast('Cập nhật sách thành công');
       } else {
-        await api.createBook({ ...formData, cover: 'https://via.placeholder.com/70x100?text=Cover' });
+        payload.append('code', formData.code);
+        await api.createBook(payload);
         showToast('Thêm sách thành công');
       }
       setIsModalOpen(false);
       fetchBooks();
     } catch (err) {
-      showToast('Có lỗi xảy ra', 'error');
+      console.error(err);
+      showToast('Có lỗi xảy ra khi lưu sách', 'error');
     }
   };
 
   const openAddModal = () => {
     setEditingBook(null);
-    setFormData({ code: `BK-${Math.floor(Math.random()*9000)+1000}`, title: '', author: '', category: 'Kỹ thuật', status: 'Sẵn sàng' });
+    setFormData({ 
+      code: `BK-${Math.floor(Math.random()*9000)+1000}`, 
+      title: '', 
+      author: '', 
+      category: 'Kỹ thuật', 
+      status: 'Sẵn sàng', 
+      cover: null 
+    });
     setIsModalOpen(true);
   };
 
   const openEditModal = (book) => {
     setEditingBook(book);
-    setFormData(book);
+    setFormData(book); // Lúc này cover có thể là URL ảnh (string) từ DB gửi về
     setIsModalOpen(true);
   };
 
@@ -190,35 +214,43 @@ export default function Catalog() {
                   <table className="w-full table-auto text-left border-collapse">
                     <thead>
                       <tr className="border-b border-slate-200 bg-slate-50">
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Mã</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Ảnh bìa</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Tên sách</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Tác giả</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Thể loại</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Trạng thái</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase text-right">Hành động</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">Mã</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">Ảnh bìa</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">Tên sách</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">Tác giả</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">Thể loại</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">Trạng thái</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase text-right whitespace-nowrap">Hành động</th>
                       </tr>
                     </thead>
                     <tbody>
                       {currentBooks.map((b) => (
                         <tr key={b.code} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                          <td className="px-4 py-4 text-sm font-medium text-slate-900">{b.code}</td>
-                          <td className="px-4 py-4">
+                          <td className="px-4 py-4 text-sm font-medium text-slate-900 whitespace-nowrap">{b.code}</td>
+                          <td className="px-4 py-4 whitespace-nowrap">
                             <img src={b.cover} alt={`${b.title} cover`} className="w-12 h-16 rounded-md object-cover border border-slate-200 shadow-sm" />
                           </td>
                           <td className="px-4 py-4">
-                            <div className="font-semibold text-slate-900 line-clamp-1">{b.title}</div>
+                            {/* Cắt ngắn Tên sách nếu quá dài */}
+                            <div className="font-semibold text-slate-900 line-clamp-1 max-w-[200px]" title={b.title}>
+                              {b.title}
+                            </div>
                           </td>
-                          <td className="px-4 py-4 text-sm text-slate-600">{b.author}</td>
                           <td className="px-4 py-4 text-sm text-slate-600">
+                            {/* Cắt ngắn Tác giả nếu quá dài */}
+                            <div className="line-clamp-1 max-w-[180px]" title={b.author}>
+                              {b.author}
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 text-sm text-slate-600 whitespace-nowrap">
                             <span className="bg-slate-100 px-2.5 py-1 rounded-md">{b.category}</span>
                           </td>
-                          <td className="px-4 py-4">
+                          <td className="px-4 py-4 whitespace-nowrap">
                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${b.status === 'Sẵn sàng' ? 'bg-emerald-100 text-emerald-700' : b.status === 'Đang mượn' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'}`}>
                               {b.status}
                             </span>
                           </td>
-                          <td className="px-4 py-4 text-right">
+                          <td className="px-4 py-4 text-right whitespace-nowrap">
                             <div className="flex items-center justify-end gap-2">
                               <Link to={`/catalog/${b.code}/reserve`} className="w-8 h-8 flex items-center justify-center rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-colors" title="Đặt trước">
                                 <span className="material-symbols-outlined text-[18px]">bookmark_add</span>
@@ -266,6 +298,29 @@ export default function Catalog() {
             <label className="block text-sm font-semibold text-slate-700 mb-1">Mã sách</label>
             <input required value={formData.code} onChange={e => setFormData({...formData, code: e.target.value})} disabled={!!editingBook} className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-primary disabled:bg-slate-100" />
           </div>
+          
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1">Ảnh bìa</label>
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setFormData({ ...formData, cover: e.target.files[0] });
+                }
+              }}
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:border-primary text-sm
+                file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 
+                file:text-sm file:font-semibold file:bg-primary-container file:text-white 
+                hover:file:brightness-110 cursor-pointer" 
+            />
+            {formData.cover instanceof File ? (
+              <p className="text-xs text-emerald-600 mt-1">Đã chọn file: {formData.cover.name}</p>
+            ) : formData.cover && typeof formData.cover === 'string' ? (
+              <p className="text-xs text-slate-500 mt-1">Đang dùng ảnh hiện tại. Chọn file mới để thay đổi.</p>
+            ) : null}
+          </div>
+
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1">Tên sách</label>
             <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-primary" />

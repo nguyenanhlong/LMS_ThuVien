@@ -6,7 +6,7 @@ const client = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
+    // Đã xóa 'Content-Type': 'application/json' để Axios tự động nhận diện FormData khi upload ảnh
   },
 });
 
@@ -29,7 +29,8 @@ const unwrap = (promise) => promise.then((response) => response.data);
 export const getBooks = () => unwrap(client.get('/books'));
 export const getBookByCode = (code) => unwrap(client.get(`/books/${encodeURIComponent(code)}`));
 export const createBook = (payload) => unwrap(client.post('/books', payload));
-export const updateBook = (code, payload) => unwrap(client.put(`/books/${encodeURIComponent(code)}`, payload));
+// Quan trọng: Đổi put thành post để hỗ trợ upload file qua FormData (kết hợp với _method='PUT' ở Frontend)
+export const updateBook = (code, payload) => unwrap(client.post(`/books/${encodeURIComponent(code)}`, payload));
 export const deleteBook = (code) => unwrap(client.delete(`/books/${encodeURIComponent(code)}`));
 
 export const getReaders = () => unwrap(client.get('/readers'));
