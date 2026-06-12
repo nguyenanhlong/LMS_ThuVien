@@ -49,7 +49,7 @@ export default function LoanDetail() {
         <div className="p-8 space-y-8 max-w-5xl mx-auto w-full">
           <div className="rounded-3xl bg-white border border-slate-200 px-6 py-4 shadow-sm flex items-center justify-between">
             <nav className="text-xs text-slate-500 flex flex-wrap items-center gap-2">
-              <Link to="/" className="hover:text-primary">Dashboard</Link>
+              <Link to="/dashboard" className="hover:text-primary">Dashboard</Link>
               <span>›</span>
               <Link to="/loans" className="hover:text-primary">Mượn trả</Link>
               <span>›</span>

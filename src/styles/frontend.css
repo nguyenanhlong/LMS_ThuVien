@@ -346,6 +346,7 @@ footer a:hover::after {
 .dashboard-container table tbody td {
   color: #334155; /* readable body text */
   font-weight: 500;
+  vertical-align: middle;
 }
 
 .dashboard-container table tbody tr {

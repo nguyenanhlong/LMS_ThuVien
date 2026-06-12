@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 
 const defaultMenuItems = [
-  { label: 'Dashboard', icon: 'dashboard', to: '/' },
+  { label: 'Dashboard', icon: 'dashboard', to: '/dashboard' },
   { label: 'Tra cứu tài liệu', icon: 'search', to: '/search' },
   { label: 'Quản lý sách', icon: 'menu_book', to: '/catalog' },
   { label: 'Mượn trả', icon: 'receipt_long', to: '/loans' },

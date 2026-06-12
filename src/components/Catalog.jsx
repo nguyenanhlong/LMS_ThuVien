@@ -7,6 +7,16 @@ import { useToast } from '../context/ToastContext';
 import { Modal, ConfirmDialog, LoadingState, EmptyState } from './sharedUI';
 import '../styles/frontend.css';
 
+const BACKEND_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api').replace(/\/api\/?$/, '');
+const DEFAULT_COVER = '/images/default-book.svg';
+
+const getCoverUrl = (cover) => {
+  if (!cover) return DEFAULT_COVER;
+  if (cover.startsWith('http')) return cover;
+  if (cover.startsWith('/storage')) return BACKEND_BASE + cover;
+  return BACKEND_BASE + '/storage/' + cover;
+};
+
 export default function Catalog() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -226,31 +236,37 @@ export default function Catalog() {
                     <tbody>
                       {currentBooks.map((b) => (
                         <tr key={b.code} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                          <td className="px-4 py-4 text-sm font-medium text-slate-900 whitespace-nowrap">{b.code}</td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            <img src={b.cover} alt={`${b.title} cover`} className="w-12 h-16 rounded-md object-cover border border-slate-200 shadow-sm" />
+                          <td className="px-4 py-3 text-sm font-medium text-slate-900 whitespace-nowrap">{b.code}</td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <div className="flex items-center justify-center w-[70px] mx-auto">
+                              <img 
+                                src={getCoverUrl(b.cover)} 
+                                alt={`${b.title} cover`} 
+                                className="w-[60px] h-[80px] rounded-md object-cover border border-slate-200 shadow-sm bg-slate-50"
+                                onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_COVER; }}
+                              />
+                            </div>
                           </td>
-                          <td className="px-4 py-4">
-                            {/* Cắt ngắn Tên sách nếu quá dài */}
-                            <div className="font-semibold text-slate-900 line-clamp-1 max-w-[200px]" title={b.title}>
+                          <td className="px-4 py-3">
+                            <div className="font-semibold text-slate-900 line-clamp-2 max-w-[250px] text-sm leading-snug" title={b.title}>
                               {b.title}
                             </div>
                           </td>
-                          <td className="px-4 py-4 text-sm text-slate-600">
+                          <td className="px-4 py-3 text-sm text-slate-600">
                             {/* Cắt ngắn Tác giả nếu quá dài */}
                             <div className="line-clamp-1 max-w-[180px]" title={b.author}>
                               {b.author}
                             </div>
                           </td>
-                          <td className="px-4 py-4 text-sm text-slate-600 whitespace-nowrap">
+                          <td className="px-4 py-3 text-sm text-slate-600 whitespace-nowrap">
                             <span className="bg-slate-100 px-2.5 py-1 rounded-md">{b.category}</span>
                           </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
+                          <td className="px-4 py-3 whitespace-nowrap">
                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${b.status === 'Sẵn sàng' ? 'bg-emerald-100 text-emerald-700' : b.status === 'Đang mượn' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'}`}>
                               {b.status}
                             </span>
                           </td>
-                          <td className="px-4 py-4 text-right whitespace-nowrap">
+                          <td className="px-4 py-3 text-right whitespace-nowrap">
                             <div className="flex items-center justify-end gap-2">
                               <Link to={`/catalog/${b.code}/reserve`} className="w-8 h-8 flex items-center justify-center rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-colors" title="Đặt trước">
                                 <span className="material-symbols-outlined text-[18px]">bookmark_add</span>

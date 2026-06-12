@@ -41,7 +41,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           
-          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/catalog" element={<ProtectedRoute><Catalog /></ProtectedRoute>} />
           <Route path="/catalog/:code" element={<ProtectedRoute><CatalogDetail /></ProtectedRoute>} />
           <Route path="/catalog/:code/reserve" element={<ProtectedRoute><CatalogReserve /></ProtectedRoute>} />

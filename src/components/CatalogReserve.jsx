@@ -77,7 +77,7 @@ export default function CatalogReserve() {
         <div className="p-8 space-y-8 max-w-4xl mx-auto w-full">
           <div className="rounded-3xl bg-white border border-slate-200 px-6 py-4 shadow-sm">
             <nav className="text-xs text-slate-500 flex flex-wrap items-center gap-2">
-              <Link className="hover:text-primary cursor-pointer" to="/">Dashboard</Link>
+              <Link className="hover:text-primary cursor-pointer" to="/dashboard">Dashboard</Link>
               <span>›</span>
               <Link className="hover:text-primary cursor-pointer" to="/catalog">Quản lý sách</Link>
               <span>›</span>

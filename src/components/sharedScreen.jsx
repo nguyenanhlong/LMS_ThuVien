@@ -13,7 +13,7 @@ export function Page({ title, description, crumbs, actions, children }) {
         <section className="p-8 space-y-8">
           <div className="rounded-3xl bg-white border border-slate-200 px-6 py-4 shadow-sm">
             <nav className="text-xs text-slate-500 flex flex-wrap items-center gap-2">
-              <Link className="text-primary hover:underline" to="/">Dashboard</Link>
+              <Link className="text-primary hover:underline" to="/dashboard">Dashboard</Link>
               {crumbs.map((crumb) => (
                 <Fragment key={crumb}>
                   <span>/</span>

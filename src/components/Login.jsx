@@ -11,6 +11,12 @@ export default function Login() {
   const navigate = useNavigate();
   const showToast = useToast();
 
+  const authUser = localStorage.getItem('authUser');
+  if (authUser) {
+    navigate('/', { replace: true });
+    return null;
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);

@@ -6,6 +6,16 @@ import api from '../services/api';
 import { LoadingState } from './sharedUI';
 import '../styles/frontend.css';
 
+const BACKEND_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api').replace(/\/api\/?$/, '');
+const DEFAULT_COVER = '/images/default-book.svg';
+
+const getCoverUrl = (cover) => {
+  if (!cover) return DEFAULT_COVER;
+  if (cover.startsWith('http')) return cover;
+  if (cover.startsWith('/storage')) return BACKEND_BASE + cover;
+  return BACKEND_BASE + '/storage/' + cover;
+};
+
 export default function CatalogDetail() {
   const { code } = useParams();
   const [book, setBook] = useState(null);
@@ -34,7 +44,7 @@ export default function CatalogDetail() {
         <div className="p-8 space-y-8">
           <div className="rounded-3xl bg-white border border-slate-200 px-6 py-4 shadow-sm">
             <nav className="text-xs text-slate-500 flex flex-wrap items-center gap-2">
-              <Link className="hover:text-primary cursor-pointer" to="/">Dashboard</Link>
+              <Link className="hover:text-primary cursor-pointer" to="/dashboard">Dashboard</Link>
               <span>›</span>
               <Link className="hover:text-primary cursor-pointer" to="/catalog">Quản lý sách</Link>
               <span>›</span>
@@ -63,7 +73,7 @@ export default function CatalogDetail() {
             {/* Cột trái: Thông tin sách */}
             <div className="lg:col-span-1 space-y-6">
               <div className="bg-white p-6 rounded-2xl card-shadow border border-slate-100 text-center">
-                <img src={book.cover} alt="Cover" className="w-48 h-64 object-cover mx-auto rounded-lg shadow-md mb-6" />
+                <img src={getCoverUrl(book.cover)} alt="Cover" className="w-48 h-64 object-cover mx-auto rounded-lg shadow-md mb-6" onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_COVER; }} />
                 <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 ${book.status === 'Sẵn sàng' ? 'bg-emerald-100 text-emerald-700' : book.status === 'Đang mượn' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'}`}>
                   {book.status}
                 </span>
