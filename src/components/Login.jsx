@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
@@ -11,11 +11,12 @@ export default function Login() {
   const navigate = useNavigate();
   const showToast = useToast();
 
-  const authUser = localStorage.getItem('authUser');
-  if (authUser) {
-    navigate('/', { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    const authUser = localStorage.getItem('authUser');
+    if (authUser) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ export default function Login() {
     try {
       await api.login(email, password);
       showToast('Đăng nhập thành công!', 'success');
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       showToast(err.message || 'Lỗi đăng nhập', 'error');
     } finally {
