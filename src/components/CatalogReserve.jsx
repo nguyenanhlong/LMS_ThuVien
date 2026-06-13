@@ -60,7 +60,7 @@ export default function CatalogReserve() {
       if (res.email_sent) {
         showToast('Đặt trước thành công! Email xác nhận đã được gửi.', 'success');
       } else {
-        showToast('Đặt trước thành công nhưng chưa gửi được email.', 'warning');
+        showToast('Đặt trước thành công nhưng gửi email thất bại. Vui lòng kiểm tra cấu hình Gmail SMTP backend.', 'warning');
       }
       navigate(`/catalog/${code}`);
     } catch (err) {
